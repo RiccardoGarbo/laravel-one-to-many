@@ -22,6 +22,15 @@
       <div  class="form-text">Add image for new project.</div>
     </div>
 
+    <select name="type_id" class="form-select" aria-label="Default select example">
+      <option selected>Open this select menu</option>
+      <option value="">Nessuna</option>
+      @foreach ( $types as $type )
+      <option value="{{$type->id}}">{{$type->label}}</option>
+        
+      @endforeach
+    </select>
+
     <button type="submit" class="btn btn-primary">Create</button>
   </form>
 </div>

@@ -16,7 +16,7 @@
     <table class="table ">
         <thead>
             <tr>
-                <th scope="col">Title</th>
+                <th scope="col">Title</th>           
                 <th scope="col">Description</th>
                 <th scope="col">Image</th>
                 <th scope="col">Created at</th>
