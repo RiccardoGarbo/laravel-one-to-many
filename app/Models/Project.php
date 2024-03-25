@@ -10,6 +10,10 @@ class Project extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    public function type()
+    {
+        return $this->belongsTo(Type::class);
+    }
 
-    protected $fillable = ['title', 'content'];
+    protected $fillable = ['title', 'content', 'type_id'];
 }
