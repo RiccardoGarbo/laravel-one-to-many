@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('content');
             $table->string('image');
+            $table->foreignId('type_id')->constrained();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -25,8 +26,10 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down(): void
+    public function down(Blueprint $table): void
     {
+        $table->dropForeign('projects_type_id_foreign');
+        $table->dropColumn('type_id');
         Storage::deleteDirectory('project_images');
         Schema::dropIfExists('projects');
     }
