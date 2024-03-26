@@ -41,9 +41,20 @@ class ProjectController extends Controller
 
         $request->validate([
 
-            /*'title' => 'required|string|min:5|max:40|unique:projects',
+            'title' => 'required|string|min:5|max:40|unique:projects',
             'content' => 'required|string',
-            'image' => 'required|image'*/]);
+            'image' => 'required|image',
+            'type_id' => 'nullable|exists:types,id'
+        ], [
+            'title.required' => 'il titolo è obbligatorio',
+            'title.min' => 'il titolo deve contenere almeno 5 caratteri',
+            'title.max' => 'il titolo non può superare i 40 caratteri',
+            'title.unique' => 'non possono esistere due progetti con lo stesso titolo',
+            'image.image' => 'il file inserito non è un\'immagine',
+            'content.required' => 'il contenuto è obbligatorio',
+            'type_id.exists' => 'Tipo di progetto non valido '
+
+        ]);
 
         $data = $request->all();
         $newProject = new Project();
@@ -70,7 +81,8 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        return view('admin.projects.edit', compact('project'));
+        $types = Type::select('label', 'id')->get();
+        return view('admin.projects.edit', compact('project', 'types'));
     }
 
     /**
@@ -78,6 +90,23 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
+        $request->validate([
+
+            'title' => 'required|string|min:5|max:40|unique:projects',
+            'content' => 'required|string',
+            'image' => 'required|image',
+            'type_id' => 'nullable|exists:types,id'
+        ], [
+            'title.required' => 'il titolo è obbligatorio',
+            'title.min' => 'il titolo deve contenere almeno 5 caratteri',
+            'title.max' => 'il titolo non può superare i 40 caratteri',
+            'title.unique' => 'non possono esistere due progetti con lo stesso titolo',
+            'image.image' => 'il file inserito non è un\'immagine',
+            'content.required' => 'il contenuto è obbligatorio',
+            'type_id.exists' => 'Tipo di progetto non valido '
+
+        ]);
+
         $data = $request->all();
         if (Arr::exists($data, 'image')) {
             if ($project->image) Storage::delete($project->image);
@@ -85,6 +114,7 @@ class ProjectController extends Controller
             $project->image = $img_url;
         }
         $project->update($data);
+        $types = Type::select('label', 'id')->get();
         return to_route('admin.projects.show', $project);
     }
 

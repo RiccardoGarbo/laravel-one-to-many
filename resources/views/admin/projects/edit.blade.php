@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <h1 class="text-center">Edit your project!</h1>
-<form action="{{route('admin.projects.update', $project)}}" method="POST">
+<form action="{{route('admin.projects.update', $project)}}" method="POST" enctype="multipart/form-data">
     @csrf
     @method('PUT')
     <div class="mb-3">
@@ -18,9 +18,16 @@
     </div>
     <div class="mb-3">
       <label for="image" class="form-label">Image project</label>
-      <input type="text" name="image"  class="form-control" value="{{old('image','')}}">
-      <div  class="form-text">Edit image</div>
+      <input type="file" name="image"  class="form-control">
+      <div  class="form-text">Add image for new project.</div>
     </div>
+    <select name="type_id" class="form-select" aria-label="Default select example">
+      <option selected>Open this select menu</option>
+      <option value="">Nessuna</option>
+      @foreach ( $types as $type )
+      <option value="{{$type->id}}">{{$type->label}}</option>        
+      @endforeach
+    </select>
 
     <button type="submit" class="btn btn-primary">Create</button>
   </form>
